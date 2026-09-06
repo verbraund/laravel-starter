@@ -16,7 +16,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => 'basic',
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -38,8 +38,16 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
+        'admin' => [
+            'driver' => 'admin',
+            'provider' => 'users',
+        ],
+        'tfa' => [
+            'driver' => 'tfa',
+            'provider' => 'users',
+        ],
+        'refresh' => [
+            'driver' => 'refresh',
             'provider' => 'users',
         ],
     ],
@@ -112,6 +120,16 @@ return [
     |
     */
 
+    'allowed_ips' => env('AUTH_ALLOWED_IPS', ''),
+
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+
+    'key' => env('AUTH_KEY','default_string_key'),
+
+    'token_access_expire' => env('AUTH_ACCESS_TOKEN_EXPIRE',60), //minute
+
+    'token_refresh_expire' => env('AUTH_REFRESH_TOKEN_EXPIRE', 240), //minute
+
+    'password_reset_token_expire' => env('AUTH_PASSWORD_RESET_TOKEN_EXPIRE', 60), //minute
 
 ];
