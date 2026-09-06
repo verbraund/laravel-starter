@@ -1,0 +1,43 @@
+name: CI
+on: push
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        name: Run tests
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v7
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.5'
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, pdo_mysql, gd, redis
+                    coverage: none
+
+            -   name: Determine composer cache directory
+                id: composer-cache
+                run: echo "directory=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            -   name: Cache composer dependencies
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.directory }}
+                    key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: ${{ runner.os }}-composer-
+
+            -   name: Install composer dependencies
+                run: composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+
+            -   name: Copy environment file
+                run: cp .env.example .env
+
+            -   name: Generate app key
+                run: php artisan key:generate
+
+            -   name: Execute tests
+                run: php artisan test
+
+
