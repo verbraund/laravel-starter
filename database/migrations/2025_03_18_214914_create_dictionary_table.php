@@ -16,10 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('key',50)->unique();
             $table->string('type',10);
-            $table->integer('small_value')->index()->nullable();
-            $table->string('value',200)->index()->nullable();
-            $table->text('long_value')->nullable();
-            $table->mediumText('extra_value')->charset('binary')->nullable();
+            $table->text('value')->nullable();
             $table->timestamps();
         });
     }

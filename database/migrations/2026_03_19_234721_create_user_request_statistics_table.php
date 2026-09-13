@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('refresh_token_id')->index();
             $table->unsignedBigInteger('method')->index();
             $table->unsignedBigInteger('url')->index();
+            $table->unsignedSmallInteger('response_status')->index();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

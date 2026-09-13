@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('permission_role', function (Blueprint $table) {
-            $table->id();
+            $table->primary(['role_id', 'resource_id', 'permission_id']);
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('resource_id');
             $table->unsignedBigInteger('permission_id');

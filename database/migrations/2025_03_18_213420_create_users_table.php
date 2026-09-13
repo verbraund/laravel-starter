@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->timestamp('password_expired_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('tfa_secret')->nullable();
+            $table->boolean('mfa_enabled')->default(false);
+            $table->string('mfa_secret')->nullable();
             $table->timestamp('last_login_at')->nullable();
-            $table->boolean('is_active')->nullable()->default(true);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
             $table->charset = 'utf8mb4';
