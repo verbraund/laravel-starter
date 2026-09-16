@@ -20,11 +20,6 @@ class Resource extends Model
         return $query->where('name', $name);
     }
 
-    public static function findIdByName($name)
-    {
-        return (int)self::name($name)->value('id');
-    }
-
     public function menus()
     {
         return $this->hasMany(Menu::class);

@@ -25,25 +25,41 @@ class Role extends Model
         ];
     }
 
+    public function scopeSlug($query, $slug)
+    {
+        return $query->where('slug', $slug);
+    }
+
     public function users()
     {
         return $this->hasMany(User::class);
     }
 
-    public function resource($name)
+    public function resource($resource)
     {
+        //TODO remove start
+        if(!$resource instanceof Resource){
+            $resource = Resource::name($resource)->firstOrFail();
+        }
+        //TODO remove end
+
         return $this->belongsToMany(Permission::class)
-            ->wherePivot('resource_id', Resource::findIdByName($name));
+            ->withPivotValue('resource_id', $resource->id)
+            ->withTimestamps();
     }
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsToMany(Permission::class, 'permission_role')
+            ->withPivot('resource_id')
+            ->withTimestamps();
     }
 
     public function resources()
     {
-        return $this->belongsToMany(Resource::class, 'permission_role');
+        return $this->belongsToMany(Resource::class, 'permission_role')
+            ->withPivot('permission_id')
+            ->withTimestamps();
     }
 
     public function isSuperAdmin(): bool

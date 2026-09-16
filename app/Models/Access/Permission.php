@@ -19,7 +19,7 @@ class Permission extends Model
 
     public function scopeHasPermission($query, $name)
     {
-        return $query->where('name',$name)->exists();
+        return $query->where('name', $name)->exists();
     }
 
 }
